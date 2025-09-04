@@ -8,11 +8,10 @@ import (
 )
 
 var (
-	list  []int      // shared list
-	mutex sync.Mutex // to handle concurrent requests
+	list  []int      
+	mutex sync.Mutex 
 )
 
-// Handler function
 func handleNumber(c *gin.Context) {
 	var input struct {
 		Number int `json:"number"`
@@ -33,23 +32,18 @@ func handleNumber(c *gin.Context) {
 	defer mutex.Unlock()
 
 	if len(list) == 0 {
-		// If list empty, simply add the number
 		list = append(list, number)
 		c.JSON(http.StatusOK, gin.H{"updated_list": list})
 		return
 	}
 
-	// Check the sign of current list (based on first element)
 	if (list[0] > 0 && number > 0) || (list[0] < 0 && number < 0) {
-		// Same sign → append
 		list = append(list, number)
 	} else {
-		// Opposite sign → reduce FIFO
 		toReduce := abs(number)
 
 		for toReduce > 0 && len(list) > 0 {
 			if abs(list[0]) > toReduce {
-				// Subtract and update first element
 				if list[0] > 0 {
 					list[0] -= toReduce
 				} else {
@@ -57,13 +51,11 @@ func handleNumber(c *gin.Context) {
 				}
 				toReduce = 0
 			} else {
-				// Remove element completely
 				toReduce -= abs(list[0])
 				list = list[1:]
 			}
 		}
 
-		// If still leftover (sign mismatch not fully resolved), append remainder with sign
 		if toReduce > 0 {
 			list = append(list, number/abs(number)*toReduce)
 		}
@@ -85,5 +77,5 @@ func main() {
     c.JSON(200, gin.H{"current_list": list})
 })
 	r.POST("/number", handleNumber)
-	r.Run(":8080") // server at localhost:8080
+	r.Run(":8080")
 }
