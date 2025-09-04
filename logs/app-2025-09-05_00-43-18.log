@@ -1,0 +1,5 @@
+time="2025-09-05 00:43:18" level=info msg="Starting application..."
+time="2025-09-05 00:43:29" level=info msg="List was empty, appended: 15"
+time="2025-09-05 00:43:30" level=info msg="Same sign, appended 15 → [15 15]"
+time="2025-09-05 00:43:41" level=info msg="Opposite sign, reducing 20 from [15 15]"
+time="2025-09-05 00:43:41" level=info msg="After reduction → [10]"
