@@ -29,7 +29,6 @@ func initLogger() {
 		logrus.Fatalf("Failed to open log file: %v", err)
 	}
 
-	// Send logs to BOTH file and console
 	mw := io.MultiWriter(os.Stdout, file)
 
 	Logger.SetOutput(mw)
